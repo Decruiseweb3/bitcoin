@@ -141,6 +141,8 @@ static UniValue ListReceived(const CWallet& wallet, const UniValue& params, cons
     const auto& func = [&](const CTxDestination& address, const std::string& label, bool is_change, const std::optional<AddressPurpose>& purpose) {
         if (is_change) return; // no change addresses
 
+        if (!wallet.IsMine(address)) return; // no send addresses
+
         auto it = mapTally.find(address);
         if (it == mapTally.end() && !fIncludeEmpty)
             return;
